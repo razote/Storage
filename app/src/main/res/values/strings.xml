@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Storage</string>
+
+    <string name="insert_dummy_data">Insert Dummy Data</string>
+    <string name="delete_all_entries">Delete All Entries</string>
+
 </resources>
