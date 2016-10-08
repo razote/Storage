@@ -1,7 +1,22 @@
 <resources>
     <string name="app_name">Storage</string>
 
+    <!-- CatalogActivity Overflow Menu Items -->
     <string name="insert_dummy_data">Insert Dummy Data</string>
     <string name="delete_all_entries">Delete All Entries</string>
+
+    <!-- EditorActivity Labels-->
+    <string name="inventory_name">Name</string>
+    <string name="inventory_quantity">Quantity</string>
+    <string name="inventory_price">Price</string>
+    <string name="inventory_img_dir">Image Directory</string>
+    <string name="inventory_sellable">Sellable</string>
+
+    <!-- EditorActivity Hints-->
+    <string name="inventory_hint_name">Name</string>
+    <string name="inventory_hint_quantity">Quantity</string>
+    <string name="inventory_hint_price">Price</string>
+    <string name="inventory_hint_img_dir">Image Directory</string>
+    <string name="inventory_hint_sellable">Sellable</string>
 
 </resources>
