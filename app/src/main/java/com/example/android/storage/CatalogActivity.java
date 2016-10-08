@@ -1,5 +1,6 @@
 package com.example.android.storage;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
@@ -14,10 +15,14 @@ import com.example.android.storage.data.StorageDbHelper;
 
 public class CatalogActivity extends AppCompatActivity {
 
+    private StorageDbHelper mDbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catalog);
+
+        mDbHelper = new StorageDbHelper(this);
 
         displayDatabaseInfo();
     }
@@ -45,6 +50,20 @@ public class CatalogActivity extends AppCompatActivity {
         }
     }
 
+    private void insertInventory() {
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(InventoryEntry.COLUMN_INVETORY_NAME, "Shirt");
+        values.put(InventoryEntry.COLUMN_INVETORY_QUANTITY, 1);
+        values.put(InventoryEntry.COLUMN_INVETORY_PRICE, 300);
+        values.put(InventoryEntry.COLUMN_INVETORY_IMG_DIR, "Test_Dir");
+        values.put(InventoryEntry.COLUMN_INVETORY_SELLABLE, InventoryEntry.SELLABLE_TRUE);
+
+        long createdRow = db.insert(InventoryEntry.TABLE_NAME, null, values);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_catalog, menu);
@@ -55,7 +74,8 @@ public class CatalogActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.insert_dummy_data:
-                //TODO
+                insertInventory();
+                displayDatabaseInfo();
                 break;
             case R.id.delete_all_entries:
                 //TODO
