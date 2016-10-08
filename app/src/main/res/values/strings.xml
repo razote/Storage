@@ -5,6 +5,10 @@
     <string name="insert_dummy_data">Insert Dummy Data</string>
     <string name="delete_all_entries">Delete All Entries</string>
 
+    <!-- EditorActivity Overflow Menu Items -->
+    <string name="action_save">Save</string>
+    <string name="action_delete">Delete</string>
+
     <!-- EditorActivity Labels-->
     <string name="inventory_name">Name</string>
     <string name="inventory_quantity">Quantity</string>
