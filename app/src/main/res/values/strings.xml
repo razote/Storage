@@ -19,4 +19,8 @@
     <string name="inventory_hint_img_dir">Image Directory</string>
     <string name="inventory_hint_sellable">Sellable</string>
 
+    <!-- Boolean True or False-->
+    <string name="boolean_true">True</string>
+    <string name="boolean_false">False</string>
+
 </resources>

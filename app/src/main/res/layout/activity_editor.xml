@@ -67,9 +67,19 @@
             style="@style/editor_activity_label"
             android:text="@string/inventory_sellable"/>
 
-        <EditText
-            style="@style/editor_activity_values"
-            android:hint="@string/inventory_hint_sellable"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2">
+
+            <Spinner
+                android:id="@+id/spinner_sellable"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:spinnerMode="dropdown">
+            </Spinner>
+
+        </LinearLayout>
 
     </LinearLayout>
 
