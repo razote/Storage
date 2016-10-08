@@ -6,12 +6,17 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.android.storage.data.StorageContract.InventoryEntry;
 
 public class EditorActivity extends AppCompatActivity {
 
+    private EditText mName;
+    private EditText mQuantity;
+    private EditText mPrice;
+    private EditText mImageDir;
     private Spinner mSellableSpinner;
     private int mSellable;
 
@@ -20,6 +25,10 @@ public class EditorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
 
+        mName = (EditText) findViewById(R.id.edit_text_name);
+        mQuantity = (EditText) findViewById(R.id.edit_text_quantity);
+        mPrice = (EditText) findViewById(R.id.edit_text_price);
+        mImageDir = (EditText) findViewById(R.id.edit_text_img_dir);
         mSellableSpinner = (Spinner) findViewById(R.id.spinner_sellable);
 
         setupSpinner();

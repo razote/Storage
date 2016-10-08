@@ -16,6 +16,7 @@
             android:text="@string/inventory_name"/>
 
         <EditText
+            android:id="@+id/edit_text_name"
             style="@style/editor_activity_values"
             android:hint="@string/inventory_hint_name"/>
 
@@ -29,6 +30,7 @@
             android:text="@string/inventory_quantity"/>
 
         <EditText
+            android:id="@+id/edit_text_quantity"
             style="@style/editor_activity_values"
             android:hint="@string/inventory_hint_quantity"/>
 
@@ -42,6 +44,7 @@
             android:text="@string/inventory_price"/>
 
         <EditText
+            android:id="@+id/edit_text_price"
             style="@style/editor_activity_values"
             android:hint="@string/inventory_hint_price"/>
 
@@ -55,6 +58,7 @@
             android:text="@string/inventory_img_dir"/>
 
         <EditText
+            android:id="@+id/edit_text_img_dir"
             style="@style/editor_activity_values"
             android:hint="@string/inventory_hint_img_dir"/>
 
