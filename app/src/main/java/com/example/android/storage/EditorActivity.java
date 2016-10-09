@@ -4,7 +4,6 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,8 +20,8 @@ public class EditorActivity extends AppCompatActivity {
     private EditText mQuantity;
     private EditText mPrice;
     private EditText mImageDir;
-    private Spinner mSellableSpinner;
-    private int mSellable;
+    private Spinner mSellSpinner;
+    private int mSellVal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +32,7 @@ public class EditorActivity extends AppCompatActivity {
         mQuantity = (EditText) findViewById(R.id.edit_text_quantity);
         mPrice = (EditText) findViewById(R.id.edit_text_price);
         mImageDir = (EditText) findViewById(R.id.edit_text_img_dir);
-        mSellableSpinner = (Spinner) findViewById(R.id.spinner_sellable);
+        mSellSpinner = (Spinner) findViewById(R.id.spinner_sellable);
 
         setupSpinner();
     }
@@ -44,24 +43,24 @@ public class EditorActivity extends AppCompatActivity {
 
         sellableSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
 
-        mSellableSpinner.setAdapter(sellableSpinnerAdapter);
+        mSellSpinner.setAdapter(sellableSpinnerAdapter);
 
-        mSellableSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mSellSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selection = (String) parent.getItemAtPosition(position);
                 if (!TextUtils.isEmpty(selection)) {
                     if (selection.equals(getString(R.string.boolean_true))) {
-                        mSellable = InventoryEntry.SELLABLE_TRUE;
+                        mSellVal = InventoryEntry.SELLABLE_TRUE;
                     } else {
-                        mSellable = InventoryEntry.SELLABLE_FALSE;
+                        mSellVal = InventoryEntry.SELLABLE_FALSE;
                     }
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                mSellable = InventoryEntry.SELLABLE_TRUE;
+                mSellVal = InventoryEntry.SELLABLE_TRUE;
             }
         });
     }
