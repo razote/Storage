@@ -87,7 +87,7 @@ public class EditorActivity extends AppCompatActivity {
         values.put(InventoryEntry.COLUMN_INVETORY_QUANTITY, quantity);
         values.put(InventoryEntry.COLUMN_INVETORY_PRICE, price);
         values.put(InventoryEntry.COLUMN_INVETORY_IMG_DIR, img_dirString);
-        values.put(InventoryEntry.COLUMN_INVETORY_SELLABLE, InventoryEntry.SELLABLE_TRUE);
+        values.put(InventoryEntry.COLUMN_INVETORY_SELLABLE, mSellVal);
 
         long createdRow = db.insert(InventoryEntry.TABLE_NAME, null, values);
 
