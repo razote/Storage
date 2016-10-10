@@ -22,6 +22,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".CatalogActivity" />
         </activity>
+        <provider
+            android:name="com.example.android.storage.data.StorageProvider"
+            android:authorities="com.example.android.storage"
+            android:exported="false" />
     </application>
 
 </manifest>
