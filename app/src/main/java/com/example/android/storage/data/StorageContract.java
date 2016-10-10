@@ -1,10 +1,17 @@
 package com.example.android.storage.data;
 
+import android.net.Uri;
 import android.provider.BaseColumns;
 
 public final class StorageContract {
 
+    public static final String CONTENT_AUTHORITY = "com.example.android.storage";
+    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+    public static final String PATH_INVENTORY = "inventory";
+
     public static final class InventoryEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_INVENTORY);
 
         public final static String TABLE_NAME = "inventory";
 
