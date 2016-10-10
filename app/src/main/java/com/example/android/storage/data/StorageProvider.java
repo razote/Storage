@@ -2,6 +2,7 @@ package com.example.android.storage.data;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
 
@@ -11,6 +12,16 @@ public class StorageProvider extends ContentProvider {
     public static final String LOG_TAG = StorageProvider.class.getSimpleName();
 
     private StorageDbHelper mDbHelper;
+
+    private static final int PETS = 100;
+    private static final int PET_ID = 101;
+
+    private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+
+    static {
+        sUriMatcher.addURI(StorageContract.CONTENT_AUTHORITY, StorageContract.PATH_INVENTORY, PETS);
+        sUriMatcher.addURI(StorageContract.CONTENT_AUTHORITY, StorageContract.PATH_INVENTORY + "/#", PET_ID);
+    }
 
     /**
      * Initialize the provider and the database helper object.
