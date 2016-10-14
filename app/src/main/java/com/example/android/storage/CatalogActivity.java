@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,8 +19,6 @@ import com.example.android.storage.data.StorageDbHelper;
 
 public class CatalogActivity extends AppCompatActivity {
 
-    private StorageDbHelper mDbHelper;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,8 +32,6 @@ public class CatalogActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        mDbHelper = new StorageDbHelper(this);
 
         displayDatabaseInfo();
     }
@@ -111,7 +108,7 @@ public class CatalogActivity extends AppCompatActivity {
     }
 
     private void insertInventory() {
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        //SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
 
@@ -121,7 +118,8 @@ public class CatalogActivity extends AppCompatActivity {
         values.put(InventoryEntry.COLUMN_INVETORY_IMG_DIR, "Test_Dir");
         values.put(InventoryEntry.COLUMN_INVETORY_SELLABLE, InventoryEntry.SELLABLE_TRUE);
 
-        long createdRow = db.insert(InventoryEntry.TABLE_NAME, null, values);
+        //long createdRow = db.insert(InventoryEntry.TABLE_NAME, null, values);
+        Uri newUri = getContentResolver().insert(InventoryEntry.CONTENT_URI, values);
     }
 
     @Override

@@ -7,6 +7,9 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.util.Log;
+
+import static android.R.attr.id;
 
 public class StorageProvider extends ContentProvider {
 
@@ -68,7 +71,27 @@ public class StorageProvider extends ContentProvider {
      */
     @Override
     public Uri insert(Uri uri, ContentValues contentValues) {
-        return null;
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case PETS:
+                return insertInventory(uri, contentValues);
+            default:
+                throw new IllegalArgumentException("Insertion is not supported for " + uri);
+        }
+    }
+
+    private Uri insertInventory(Uri uri, ContentValues values) {
+
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+
+        long id = database.insert(StorageContract.InventoryEntry.TABLE_NAME, null, values);
+
+        if (id == -1) {
+            Log.e(LOG_TAG, "Failed to insert row for " + uri);
+            return null;
+        }
+
+        return ContentUris.withAppendedId(uri, id);
     }
 
     /**

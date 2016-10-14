@@ -2,6 +2,7 @@ package com.example.android.storage;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -77,9 +78,9 @@ public class EditorActivity extends AppCompatActivity {
         int quantity = Integer.parseInt(quantityString);
         int price = Integer.parseInt(priceString);
 
-        StorageDbHelper mDbHelper = new StorageDbHelper(this);
+        //StorageDbHelper mDbHelper = new StorageDbHelper(this);
 
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        //SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
 
@@ -89,12 +90,13 @@ public class EditorActivity extends AppCompatActivity {
         values.put(InventoryEntry.COLUMN_INVETORY_IMG_DIR, img_dirString);
         values.put(InventoryEntry.COLUMN_INVETORY_SELLABLE, mSellVal);
 
-        long createdRow = db.insert(InventoryEntry.TABLE_NAME, null, values);
+        //long createdRow = db.insert(InventoryEntry.TABLE_NAME, null, values);
+        Uri newUri = getContentResolver().insert(InventoryEntry.CONTENT_URI, values);
 
-        if(createdRow != -1) {
-            Toast.makeText(this, "Inventory Saved", Toast.LENGTH_SHORT).show();
+        if(newUri == null) {
+            Toast.makeText(this, "Error in saving Inventory", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "Error in saving the Inventory", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Inventory Saved", Toast.LENGTH_SHORT).show();
         }
     }
 
