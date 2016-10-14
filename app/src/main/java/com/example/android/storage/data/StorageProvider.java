@@ -9,8 +9,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
 
-import static android.R.attr.id;
-
 public class StorageProvider extends ContentProvider {
 
     /** Tag for the log messages */
@@ -18,14 +16,14 @@ public class StorageProvider extends ContentProvider {
 
     private StorageDbHelper mDbHelper;
 
-    private static final int PETS = 100;
-    private static final int PET_ID = 101;
+    private static final int INVENTORY = 100;
+    private static final int INVENTORY_ID = 101;
 
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
     static {
-        sUriMatcher.addURI(StorageContract.CONTENT_AUTHORITY, StorageContract.PATH_INVENTORY, PETS);
-        sUriMatcher.addURI(StorageContract.CONTENT_AUTHORITY, StorageContract.PATH_INVENTORY + "/#", PET_ID);
+        sUriMatcher.addURI(StorageContract.CONTENT_AUTHORITY, StorageContract.PATH_INVENTORY, INVENTORY);
+        sUriMatcher.addURI(StorageContract.CONTENT_AUTHORITY, StorageContract.PATH_INVENTORY + "/#", INVENTORY_ID);
     }
 
     /**
@@ -49,11 +47,11 @@ public class StorageProvider extends ContentProvider {
 
         int match = sUriMatcher.match(uri);
         switch (match) {
-            case PETS:
+            case INVENTORY:
                 cursor = database.query(StorageContract.InventoryEntry.TABLE_NAME, projection,
                         selection, selectionArgs, null, null, sortOrder);
                 break;
-            case PET_ID:
+            case INVENTORY_ID:
                 selection = StorageContract.InventoryEntry._ID + "=?";
                 selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
 
@@ -73,7 +71,7 @@ public class StorageProvider extends ContentProvider {
     public Uri insert(Uri uri, ContentValues contentValues) {
         final int match = sUriMatcher.match(uri);
         switch (match) {
-            case PETS:
+            case INVENTORY:
                 return insertInventory(uri, contentValues);
             default:
                 throw new IllegalArgumentException("Insertion is not supported for " + uri);
@@ -123,7 +121,66 @@ public class StorageProvider extends ContentProvider {
      */
     @Override
     public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
-        return 0;
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case INVENTORY:
+                return updateInventory(uri, contentValues, selection, selectionArgs);
+            case INVENTORY_ID:
+                // For the INVENTORY_ID code, extract out the ID from the URI,
+                // so we know which row to update. Selection will be "_id=?" and selection
+                // arguments will be a String array containing the actual ID.
+                selection = StorageContract.InventoryEntry._ID + "=?";
+                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                return updateInventory(uri, contentValues, selection, selectionArgs);
+            default:
+                throw new IllegalArgumentException("Update is not supported for " + uri);
+        }
+    }
+
+    private int updateInventory(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+
+        if (values.containsKey(StorageContract.InventoryEntry.COLUMN_INVETORY_NAME)) {
+            String name = values.getAsString(StorageContract.InventoryEntry.COLUMN_INVETORY_NAME);
+            if (name == null || name.isEmpty()) {
+                throw new IllegalArgumentException("Inventory requires a name");
+            }
+        }
+
+        if (values.containsKey(StorageContract.InventoryEntry.COLUMN_INVETORY_QUANTITY)) {
+            Integer quantity = values.getAsInteger(StorageContract.InventoryEntry.COLUMN_INVETORY_QUANTITY);
+            if (quantity != null && quantity < 0) {
+                throw new IllegalArgumentException("Inventory requires valid quantity");
+            }
+        }
+
+        if (values.containsKey(StorageContract.InventoryEntry.COLUMN_INVETORY_PRICE)) {
+            Integer price = values.getAsInteger(StorageContract.InventoryEntry.COLUMN_INVETORY_PRICE);
+            if (price != null && price < 0) {
+                throw new IllegalArgumentException("Inventory requires valid price");
+            }
+        }
+
+        if (values.containsKey(StorageContract.InventoryEntry.COLUMN_INVETORY_IMG_DIR)) {
+            String img_dir = values.getAsString(StorageContract.InventoryEntry.COLUMN_INVETORY_IMG_DIR);
+            if (img_dir == null || img_dir.isEmpty()) {
+                throw new IllegalArgumentException("Inventory requires an image");
+            }
+        }
+
+        if (values.containsKey(StorageContract.InventoryEntry.COLUMN_INVETORY_SELLABLE)) {
+            Integer sell = values.getAsInteger(StorageContract.InventoryEntry.COLUMN_INVETORY_SELLABLE);
+            if (sell == null || !StorageContract.InventoryEntry.isValidSellable(sell)) {
+                throw new IllegalArgumentException("Inventory requires valid price");
+            }
+        }
+
+        if (values.size() == 0) {
+            return 0;
+        }
+
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+
+        return database.update(StorageContract.InventoryEntry.TABLE_NAME, values, selection, selectionArgs);
     }
 
     /**
