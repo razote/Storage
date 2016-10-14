@@ -81,6 +81,30 @@ public class StorageProvider extends ContentProvider {
     }
 
     private Uri insertInventory(Uri uri, ContentValues values) {
+        String name = values.getAsString(StorageContract.InventoryEntry.COLUMN_INVETORY_NAME);
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("Inventory requires a name");
+        }
+
+        Integer quantity = values.getAsInteger(StorageContract.InventoryEntry.COLUMN_INVETORY_QUANTITY);
+        if (quantity != null && quantity < 0) {
+            throw new IllegalArgumentException("Inventory requires valid quantity");
+        }
+
+        Integer price = values.getAsInteger(StorageContract.InventoryEntry.COLUMN_INVETORY_PRICE);
+        if (price != null && price < 0) {
+            throw new IllegalArgumentException("Inventory requires valid price");
+        }
+
+        String img_dir = values.getAsString(StorageContract.InventoryEntry.COLUMN_INVETORY_IMG_DIR);
+        if (img_dir == null || img_dir.isEmpty()) {
+            throw new IllegalArgumentException("Inventory requires an image");
+        }
+
+        Integer sell = values.getAsInteger(StorageContract.InventoryEntry.COLUMN_INVETORY_SELLABLE);
+        if (sell == null || !StorageContract.InventoryEntry.isValidSellable(sell)) {
+            throw new IllegalArgumentException("Inventory requires valid price");
+        }
 
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
 

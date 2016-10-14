@@ -3,6 +3,9 @@ package com.example.android.storage.data;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+import static android.text.style.TtsSpan.GENDER_FEMALE;
+import static android.text.style.TtsSpan.GENDER_MALE;
+
 public final class StorageContract {
 
     public static final String CONTENT_AUTHORITY = "com.example.android.storage";
@@ -25,6 +28,12 @@ public final class StorageContract {
         public static final int SELLABLE_TRUE = 1;
         public static final int SELLABLE_FALSE = 0;
 
+        public static boolean isValidSellable(int sell) {
+            if (sell == SELLABLE_TRUE || sell == SELLABLE_FALSE) {
+                return true;
+            }
+                return false;
+            }
     }
 
 }
