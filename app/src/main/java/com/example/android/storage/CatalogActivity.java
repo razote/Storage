@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.android.storage.data.StorageContract.InventoryEntry;
@@ -47,64 +48,12 @@ public class CatalogActivity extends AppCompatActivity {
                 InventoryEntry.COLUMN_INVETORY_SELLABLE
         };
 
-//        Cursor cursor = db.query(
-//                InventoryEntry.TABLE_NAME,
-//                projection,
-//                null,
-//                null,
-//                null,
-//                null,
-//                null
-//        );
-
         Cursor cursor = getContentResolver().query(InventoryEntry.CONTENT_URI, projection,
                 null, null, null);
 
-        TextView displayView = (TextView) findViewById(R.id.text_view_test);
-
-        try {
-            // Display the number of rows in the Cursor (which reflects the number of rows in the
-            // pets table in the database).
-
-//            displayView.setText("Number of rows in pets database table: " + cursor.getCount());
-
-            displayView.setText("The Inventory table contains " + cursor.getCount() + " items.\n\n");
-
-            displayView.append(InventoryEntry._ID + " - " +
-                    InventoryEntry.COLUMN_INVETORY_NAME + " - " +
-                    InventoryEntry.COLUMN_INVETORY_QUANTITY + " - " +
-                    InventoryEntry.COLUMN_INVETORY_PRICE + " - " +
-                    InventoryEntry.COLUMN_INVETORY_IMG_DIR + " - " +
-                    InventoryEntry.COLUMN_INVETORY_SELLABLE + "\n");
-
-            int idColumnIndex = cursor.getColumnIndex(InventoryEntry._ID);
-            int nameColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_INVETORY_NAME);
-            int quantityColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_INVETORY_QUANTITY);
-            int priceColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_INVETORY_PRICE);
-            int imgDirColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_INVETORY_IMG_DIR);
-            int sellColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_INVETORY_SELLABLE);
-
-            while(cursor.moveToNext()) {
-                int currentId = cursor.getInt(idColumnIndex);
-                String currentName = cursor.getString(nameColumnIndex);
-                int currentQuantity = cursor.getInt(quantityColumnIndex);
-                int currentPrice = cursor.getInt(priceColumnIndex);
-                String currentImgDir = cursor.getString(imgDirColumnIndex);
-                int currentSell = cursor.getInt(sellColumnIndex);
-
-                displayView.append(("\n" + currentId + " - " +
-                        currentName + " - " +
-                        currentQuantity + " - " +
-                        currentPrice + " - " +
-                        currentImgDir + " - " +
-                        currentSell));
-            }
-
-        } finally {
-            // Always close the cursor when you're done reading from it. This releases all its
-            // resources and makes it invalid.
-            cursor.close();
-        }
+        ListView inventoryListView = (ListView) findViewById(R.id.list);
+        InventoryCursorAdapter adapter = new InventoryCursorAdapter(this, cursor);
+        inventoryListView.setAdapter(adapter);
     }
 
     private void insertInventory() {
