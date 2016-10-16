@@ -9,6 +9,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
 
+import static android.transition.Fade.IN;
+
 public class StorageProvider extends ContentProvider {
 
     /** Tag for the log messages */
@@ -188,7 +190,19 @@ public class StorageProvider extends ContentProvider {
      */
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        return 0;
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case INVENTORY:
+                return database.delete(StorageContract.InventoryEntry.TABLE_NAME, selection, selectionArgs);
+            case INVENTORY_ID:
+                selection = StorageContract.InventoryEntry._ID + "=?";
+                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                return database.delete(StorageContract.InventoryEntry.TABLE_NAME, selection, selectionArgs);
+            default:
+                throw new IllegalArgumentException("Deletion is not supported for " + uri);
+        }
     }
 
     /**
