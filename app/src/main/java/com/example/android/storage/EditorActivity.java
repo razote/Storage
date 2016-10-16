@@ -1,7 +1,7 @@
 package com.example.android.storage;
 
 import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +17,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.android.storage.data.StorageContract.InventoryEntry;
-import com.example.android.storage.data.StorageDbHelper;
 
 public class EditorActivity extends AppCompatActivity {
 
@@ -32,6 +31,15 @@ public class EditorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
+
+        Intent intent = getIntent();
+        Uri currentPetUri = intent.getData();
+
+        if (currentPetUri == null) {
+            setTitle(getString(R.string.editor_activity_title_new_item));
+        } else {
+            setTitle(getString(R.string.editor_activity_title_edit_item));
+        }
 
         mName = (EditText) findViewById(R.id.edit_text_name);
         mQuantity = (EditText) findViewById(R.id.edit_text_quantity);

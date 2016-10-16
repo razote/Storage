@@ -27,4 +27,7 @@
     <string name="boolean_true">True</string>
     <string name="boolean_false">False</string>
 
+    <string name="editor_activity_title_new_item">Add an Item</string>
+    <string name="editor_activity_title_edit_item">Edit Inventory</string>
+
 </resources>
