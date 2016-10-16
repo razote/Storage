@@ -210,7 +210,15 @@ public class StorageProvider extends ContentProvider {
      */
     @Override
     public String getType(Uri uri) {
-        return null;
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case INVENTORY:
+                return StorageContract.InventoryEntry.CONTENT_LIST_TYPE;
+            case INVENTORY_ID:
+                return StorageContract.InventoryEntry.CONTENT_ITEM_TYPE;
+            default:
+                throw new IllegalStateException("Unknown URI " + uri + " with match " + match);
+        }
     }
 
 }
