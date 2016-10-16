@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
+import android.app.LoaderManager;
+import android.content.CursorLoader;
+import android.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,7 +21,11 @@ import android.widget.TextView;
 import com.example.android.storage.data.StorageContract.InventoryEntry;
 import com.example.android.storage.data.StorageDbHelper;
 
-public class CatalogActivity extends AppCompatActivity {
+public class CatalogActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+
+    private static final int INVENTORY_LOADER = 0;
+
+    InventoryCursorAdapter mCursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,28 +41,14 @@ public class CatalogActivity extends AppCompatActivity {
             }
         });
 
-        ListView petListView = (ListView) findViewById(R.id.list);
-        View emptyView = findViewById(R.id.empty_view);
-        petListView.setEmptyView(emptyView);
-    }
-
-    private void displayDatabaseInfo() {
-
-        String[] projection = {
-                InventoryEntry._ID,
-                InventoryEntry.COLUMN_INVETORY_NAME,
-                InventoryEntry.COLUMN_INVETORY_QUANTITY,
-                InventoryEntry.COLUMN_INVETORY_PRICE,
-                InventoryEntry.COLUMN_INVETORY_IMG_DIR,
-                InventoryEntry.COLUMN_INVETORY_SELLABLE
-        };
-
-        Cursor cursor = getContentResolver().query(InventoryEntry.CONTENT_URI, projection,
-                null, null, null);
-
         ListView inventoryListView = (ListView) findViewById(R.id.list);
-        InventoryCursorAdapter adapter = new InventoryCursorAdapter(this, cursor);
-        inventoryListView.setAdapter(adapter);
+        View emptyView = findViewById(R.id.empty_view);
+        inventoryListView.setEmptyView(emptyView);
+
+        mCursorAdapter = new InventoryCursorAdapter(this, null);
+        inventoryListView.setAdapter(mCursorAdapter);
+
+        getLoaderManager().initLoader(INVENTORY_LOADER, null, this);
     }
 
     private void insertInventory() {
@@ -74,12 +67,6 @@ public class CatalogActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        displayDatabaseInfo();
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_catalog, menu);
         return true;
@@ -90,12 +77,40 @@ public class CatalogActivity extends AppCompatActivity {
         switch(item.getItemId()) {
             case R.id.insert_dummy_data:
                 insertInventory();
-                displayDatabaseInfo();
                 break;
             case R.id.delete_all_entries:
                 //TODO
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        String[] projection = {
+                InventoryEntry._ID,
+                InventoryEntry.COLUMN_INVETORY_NAME,
+                InventoryEntry.COLUMN_INVETORY_QUANTITY,
+                InventoryEntry.COLUMN_INVETORY_PRICE,
+                InventoryEntry.COLUMN_INVETORY_IMG_DIR,
+                InventoryEntry.COLUMN_INVETORY_SELLABLE
+        };
+
+        return new CursorLoader(this,
+                InventoryEntry.CONTENT_URI,
+                projection,
+                null,
+                null,
+                null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mCursorAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mCursorAdapter.swapCursor(null);
     }
 }
