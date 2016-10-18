@@ -33,4 +33,8 @@
     <string name="editor_update_inventory_successful">Inventory updated</string>
     <string name="editor_update_inventory_failed">Error with updating inventory</string>
 
+    <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
+    <string name="discard">Discard</string>
+    <string name="keep_editing">Keep Editing</string>
+
 </resources>
