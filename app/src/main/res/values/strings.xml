@@ -30,4 +30,7 @@
     <string name="editor_activity_title_new_item">Add an Item</string>
     <string name="editor_activity_title_edit_item">Edit Inventory</string>
 
+    <string name="editor_update_inventory_successful">Inventory updated</string>
+    <string name="editor_update_inventory_failed">Error with updating inventory</string>
+
 </resources>

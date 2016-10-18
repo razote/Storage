@@ -22,8 +22,6 @@ import android.widget.Toast;
 
 import com.example.android.storage.data.StorageContract.InventoryEntry;
 
-import static android.R.attr.data;
-
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private static final int EXISTING_INVENTORY_LOADER = 0;
@@ -88,17 +86,13 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         });
     }
 
-    private void insertInventory() {
+    private void saveInventory() {
         String nameString = mName.getText().toString().trim();
         String quantityString = mQuantity.getText().toString().trim();
         String priceString = mPrice.getText().toString().trim();
         String img_dirString = mImageDir.getText().toString().trim();
         int quantity = Integer.parseInt(quantityString);
         int price = Integer.parseInt(priceString);
-
-        //StorageDbHelper mDbHelper = new StorageDbHelper(this);
-
-        //SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
 
@@ -108,13 +102,25 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         values.put(InventoryEntry.COLUMN_INVETORY_IMG_DIR, img_dirString);
         values.put(InventoryEntry.COLUMN_INVETORY_SELLABLE, mSellVal);
 
-        //long createdRow = db.insert(InventoryEntry.TABLE_NAME, null, values);
-        Uri newUri = getContentResolver().insert(InventoryEntry.CONTENT_URI, values);
+        if (mCurrentInventoryUri == null) {
+            Uri newUri = getContentResolver().insert(InventoryEntry.CONTENT_URI, values);
 
-        if(newUri == null) {
-            Toast.makeText(this, "Error in saving Inventory", Toast.LENGTH_SHORT).show();
+            if (newUri == null) {
+                Toast.makeText(this, "Error in saving Inventory", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Inventory Saved", Toast.LENGTH_SHORT).show();
+            }
+
         } else {
-            Toast.makeText(this, "Inventory Saved", Toast.LENGTH_SHORT).show();
+            int rowsAffected = getContentResolver().update(mCurrentInventoryUri, values, null, null);
+
+            if (rowsAffected == 0) {
+                Toast.makeText(this, getString(R.string.editor_update_inventory_failed),
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, getString(R.string.editor_update_inventory_successful),
+                        Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -128,7 +134,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
-                insertInventory();
+                saveInventory();
                 finish();
                 return true;
             case R.id.action_delete:
