@@ -57,6 +57,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         if (mCurrentInventoryUri == null) {
             setTitle(getString(R.string.editor_activity_title_new_item));
+            invalidateOptionsMenu();
         } else {
             setTitle(getString(R.string.editor_activity_title_edit_item));
             getLoaderManager().initLoader(EXISTING_INVENTORY_LOADER, null, this);
@@ -159,6 +160,17 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_editor, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        // If this is a new pet, hide the "Delete" menu item.
+        if (mCurrentInventoryUri == null) {
+            MenuItem menuItem = menu.findItem(R.id.action_delete);
+            menuItem.setVisible(false);
+        }
         return true;
     }
 
