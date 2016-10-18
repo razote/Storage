@@ -81,6 +81,11 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         Uri newUri = getContentResolver().insert(InventoryEntry.CONTENT_URI, values);
     }
 
+    private void deleteAllInventory() {
+        int rowsDeleted = getContentResolver().delete(InventoryEntry.CONTENT_URI, null, null);
+        Log.v("CatalogActivity", rowsDeleted + " rows deleted from pet database");
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_catalog, menu);
@@ -94,7 +99,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
                 insertInventory();
                 break;
             case R.id.delete_all_entries:
-                //TODO
+                deleteAllInventory();
                 break;
         }
         return super.onOptionsItemSelected(item);
