@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.example.android.storage.data.StorageContract;
 
+import java.text.NumberFormat;
+
 public class InventoryCursorAdapter extends CursorAdapter{
     public InventoryCursorAdapter(Context context, Cursor c) {
         super(context, c, 0);
@@ -23,15 +25,22 @@ public class InventoryCursorAdapter extends CursorAdapter{
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         TextView nameTextView = (TextView) view.findViewById(R.id.name);
-        TextView summaryTextView = (TextView) view.findViewById(R.id.summary);
+        TextView quantityTextView = (TextView) view.findViewById(R.id.quantity);
+        TextView priceTextView = (TextView) view.findViewById(R.id.price);
 
         int nameColumnIndex = cursor.getColumnIndex(StorageContract.InventoryEntry.COLUMN_INVETORY_NAME);
         int quantityColumnIndex = cursor.getColumnIndex(StorageContract.InventoryEntry.COLUMN_INVETORY_QUANTITY);
+        int priceColumnIndex = cursor.getColumnIndex(StorageContract.InventoryEntry.COLUMN_INVETORY_PRICE);
 
         String inventoryName = cursor.getString(nameColumnIndex);
-        int invetoryQuantity = cursor.getInt(quantityColumnIndex);
+        int inventoryQuantity = cursor.getInt(quantityColumnIndex);
+        int inventoryPrice = cursor.getInt(priceColumnIndex);
+
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        String moneyString = formatter.format(inventoryPrice);
 
         nameTextView.setText(inventoryName);
-        summaryTextView.setText(Integer.toString(invetoryQuantity));
+        quantityTextView.setText("Quantity: " + Integer.toString(inventoryQuantity));
+        priceTextView.setText(moneyString);
     }
 }
