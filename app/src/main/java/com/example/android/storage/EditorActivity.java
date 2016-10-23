@@ -8,18 +8,13 @@ import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
-import android.provider.OpenableColumns;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -40,13 +35,9 @@ import android.widget.Toast;
 
 import com.example.android.storage.data.StorageContract.InventoryEntry;
 
-import java.io.File;
 import java.io.FileDescriptor;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
 
-import static com.example.android.storage.R.id.quantity;
 import static com.example.android.storage.data.StorageProvider.LOG_TAG;
 
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
@@ -389,7 +380,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 InventoryEntry.COLUMN_INVETORY_SELLABLE };
 
         return new CursorLoader(this,   // Parent activity context
-                mCurrentInventoryUri,         // Query the content URI for the current pet
+                mCurrentInventoryUri,         // Query the content URI for the current inventory
                 projection,             // Columns to include in the resulting Cursor
                 null,                   // No selection clause
                 null,                   // No selection arguments
@@ -474,7 +465,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked the "Delete" button, so delete the pet.
-                deletePet();
+                deleteInventory();
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -492,9 +483,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     /**
-     * Perform the deletion of the pet in the database.
+     * Perform the deletion of the inventory in the database.
      */
-    private void deletePet() {
+    private void deleteInventory() {
         // Only perform the delete if this is an existing pet.
         if (mCurrentInventoryUri != null) {
             // Call the ContentResolver to delete the pet at the given content URI.
