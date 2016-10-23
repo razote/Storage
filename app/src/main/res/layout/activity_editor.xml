@@ -1,92 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_editor"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/activity_vertical_margin"
     android:orientation="vertical"
+    android:padding="@dimen/activity_vertical_margin"
     tools:context="com.example.android.storage.EditorActivity">
 
     <LinearLayout
-        style="@style/editor_activity_input_container">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            style="@style/editor_activity_label"
-            android:text="@string/inventory_name"/>
 
-        <EditText
-            android:id="@+id/edit_text_name"
-            style="@style/editor_activity_values"
-            android:hint="@string/inventory_hint_name"/>
+        <LinearLayout style="@style/editor_activity_input_container">
 
-    </LinearLayout>
+            <TextView
+                style="@style/editor_activity_label"
+                android:text="@string/inventory_name" />
 
-    <LinearLayout
-        style="@style/editor_activity_input_container">
-
-        <TextView
-            style="@style/editor_activity_label"
-            android:text="@string/inventory_quantity"/>
-
-        <EditText
-            android:inputType="number"
-            android:id="@+id/edit_text_quantity"
-            style="@style/editor_activity_values"
-            android:hint="@string/inventory_hint_quantity"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        style="@style/editor_activity_input_container">
-
-        <TextView
-            style="@style/editor_activity_label"
-            android:text="@string/inventory_price"/>
-
-        <EditText
-            android:inputType="number"
-            android:id="@+id/edit_text_price"
-            style="@style/editor_activity_values"
-            android:hint="@string/inventory_hint_price"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        style="@style/editor_activity_input_container">
-
-        <TextView
-            style="@style/editor_activity_label"
-            android:text="@string/inventory_img_dir"/>
-
-        <EditText
-            android:id="@+id/edit_text_img_dir"
-            style="@style/editor_activity_values"
-            android:hint="@string/inventory_hint_img_dir"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        style="@style/editor_activity_input_container">
-
-        <TextView
-            style="@style/editor_activity_label"
-            android:text="@string/inventory_sellable"/>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2">
-
-            <Spinner
-                android:id="@+id/spinner_sellable"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:spinnerMode="dropdown">
-            </Spinner>
+            <EditText
+                android:id="@+id/edit_text_name"
+                style="@style/editor_activity_values"
+                android:hint="@string/inventory_hint_name" />
 
         </LinearLayout>
 
+        <LinearLayout style="@style/editor_activity_input_container">
+
+            <TextView
+                style="@style/editor_activity_label"
+                android:text="@string/inventory_quantity" />
+
+            <EditText
+                android:id="@+id/edit_text_quantity"
+                style="@style/editor_activity_values"
+                android:hint="@string/inventory_hint_quantity"
+                android:inputType="number" />
+
+        </LinearLayout>
+
+        <LinearLayout style="@style/editor_activity_input_container">
+
+            <TextView
+                style="@style/editor_activity_label"
+                android:text="@string/inventory_price" />
+
+            <EditText
+                android:id="@+id/edit_text_price"
+                style="@style/editor_activity_values"
+                android:hint="@string/inventory_hint_price"
+                android:inputType="number" />
+
+        </LinearLayout>
+
+        <LinearLayout style="@style/editor_activity_input_container">
+
+            <TextView
+                style="@style/editor_activity_label"
+                android:text="@string/inventory_sellable" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2">
+
+                <Spinner
+                    android:id="@+id/spinner_sellable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:spinnerMode="dropdown"></Spinner>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/get_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Get Image" />
+
+        <TextView
+            android:id="@+id/image_uri"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:background="@android:color/darker_gray"
+            android:scaleType="centerCrop" />
+
     </LinearLayout>
 
-</LinearLayout>
+</ScrollView>
