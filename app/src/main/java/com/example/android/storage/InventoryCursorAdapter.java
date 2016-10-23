@@ -4,7 +4,6 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +17,6 @@ import com.example.android.storage.data.StorageContract;
 
 import java.text.NumberFormat;
 
-import static android.R.attr.id;
 import static com.example.android.storage.R.id.quantity;
 
 public class InventoryCursorAdapter extends CursorAdapter{
@@ -39,7 +37,7 @@ public class InventoryCursorAdapter extends CursorAdapter{
     public void bindView(View view, Context context, Cursor cursor) {
         TextView nameTextView = (TextView) view.findViewById(R.id.name);
         TextView quantityTextView = (TextView) view.findViewById(quantity);
-        TextView priceTextView = (TextView) view.findViewById(R.id.price);
+        TextView priceTextView = (TextView) view.findViewById(R.id.price_text_view);
 
         int idColumnIndex = cursor.getColumnIndex(StorageContract.InventoryEntry._ID);
         int nameColumnIndex = cursor.getColumnIndex(StorageContract.InventoryEntry.COLUMN_INVETORY_NAME);

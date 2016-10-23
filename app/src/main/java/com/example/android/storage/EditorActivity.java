@@ -239,20 +239,26 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         String img_dirString = mTextView.getText().toString().trim();
 
         if (mCurrentInventoryUri == null &&
-                TextUtils.isEmpty(nameString) && TextUtils.isEmpty(img_dirString)) {
+                (TextUtils.isEmpty(nameString) || TextUtils.isEmpty(img_dirString))) {
             return;
         }
 
         ContentValues values = new ContentValues();
 
         int quantity = 0;
-        if (!TextUtils.isEmpty(quantityString)) {
-            quantity = Integer.parseInt(quantityString);
-        }
-
         int price = 0;
-        if (!TextUtils.isEmpty(priceString)) {
-            price = Integer.parseInt(priceString);
+        try {
+            if (!TextUtils.isEmpty(quantityString)) {
+                quantity = Integer.parseInt(quantityString);
+            }
+
+            if (!TextUtils.isEmpty(priceString)) {
+                price = Integer.parseInt(priceString);
+            }
+        }
+        catch (NumberFormatException e){
+            Log.e(LOG_TAG, "Quantity or Price is too Big");
+            return;
         }
 
         values.put(InventoryEntry.COLUMN_INVETORY_NAME, nameString);
