@@ -8,13 +8,18 @@ import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.ParcelFileDescriptor;
+import android.provider.OpenableColumns;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -35,13 +40,18 @@ import android.widget.Toast;
 
 import com.example.android.storage.data.StorageContract.InventoryEntry;
 
+import java.io.File;
 import java.io.FileDescriptor;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import static com.example.android.storage.R.id.quantity;
 import static com.example.android.storage.data.StorageProvider.LOG_TAG;
 
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+
+    private static final String FILE_PROVIDER_AUTHORITY = "com.example.android.storage";
 
     private static final int PICK_IMAGE_REQUEST = 0;
     private Uri mUri;
@@ -108,7 +118,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openImageSelector();
+                openImageSelector(v);
             }
         });
 
@@ -138,7 +148,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         });
     }
 
-    private void openImageSelector(){
+    private void openImageSelector(View view){
         Intent intent;
         Log.e(LOG_TAG, "While is set and the ifs are worked through.");
 
@@ -309,6 +319,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             case R.id.action_delete:
                 showDeleteConfirmationDialog();
                 return true;
+            case R.id.action_email:
+                shareEmail();
+                return true;
             case android.R.id.home:
                 if (!mInventoryHasChanged) {
                     NavUtils.navigateUpFromSameTask(EditorActivity.this);
@@ -328,6 +341,21 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void shareEmail() {
+        String nameString = mName.getText().toString().trim();
+        String quantityString = mQuantity.getText().toString().trim();
+        String emailText = "Name: " + nameString + "\n" +
+                "Quantity: " + quantityString;
+
+        Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+        emailIntent.setType("application/image");
+        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,"New Order");
+        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, emailText);
+        emailIntent.putExtra(Intent.EXTRA_STREAM, mUri);
+        startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+    }
+
 
     @Override
     public void onBackPressed() {

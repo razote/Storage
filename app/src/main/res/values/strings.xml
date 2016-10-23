@@ -8,6 +8,7 @@
     <!-- EditorActivity Overflow Menu Items -->
     <string name="action_save">Save</string>
     <string name="action_delete">Delete</string>
+    <string name="action_email">Email</string>
 
     <!-- EditorActivity Labels-->
     <string name="inventory_name">Name</string>
