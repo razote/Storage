@@ -28,6 +28,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +38,7 @@ import com.example.android.storage.data.StorageContract.InventoryEntry;
 import java.io.FileDescriptor;
 import java.io.IOException;
 
+import static com.example.android.storage.R.id.quantity;
 import static com.example.android.storage.data.StorageProvider.LOG_TAG;
 
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
@@ -81,6 +83,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         } else {
             setTitle(getString(R.string.editor_activity_title_edit_item));
             getLoaderManager().initLoader(EXISTING_INVENTORY_LOADER, null, this);
+
+            LinearLayout quantityBtns = (LinearLayout) findViewById(R.id.quantity_buttons);
+            quantityBtns.setVisibility(View.VISIBLE);
         }
 
         mTextView = (TextView) findViewById(R.id.image_uri);
@@ -104,6 +109,31 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             @Override
             public void onClick(View v) {
                 openImageSelector();
+            }
+        });
+
+        Button plusBtn = (Button) findViewById(R.id.plus);
+        Button minusBtn = (Button) findViewById(R.id.minus);
+
+        plusBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int quantity;
+                String quantityString = mQuantity.getText().toString().trim();
+                quantity = Integer.parseInt(quantityString);
+                quantity++;
+                mQuantity.setText(Integer.toString(quantity));
+            }
+        });
+
+        minusBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int quantity;
+                String quantityString = mQuantity.getText().toString().trim();
+                quantity = Integer.parseInt(quantityString);
+                if(quantity > 0) quantity--;
+                mQuantity.setText(Integer.toString(quantity));
             }
         });
     }
