@@ -363,6 +363,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             mPrice.setText(Integer.toString(price));
             mTextView.setText(imgDir);
 
+            mUri = Uri.parse(imgDir);
+            mBitmap = getBitmapFromUri(mUri);
+            mImageView.setImageBitmap(mBitmap);
+
             switch (sell) {
                 case InventoryEntry.SELLABLE_TRUE:
                     mSellSpinner.setSelection(0);
